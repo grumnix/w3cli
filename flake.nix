@@ -19,9 +19,10 @@
 
             installPhase = ''
               mkdir -p $out/bin
-              ln -s ${self}/node_modules/.bin/w3 $out/bin/
-              ln -s ${self}/node_modules/.bin/w3up $out/bin/
-              ln -s ${self}/node_modules/.bin/w3access $out/bin/
+              for prg in w3 w3up w3access; do
+              echo -e "#!/bin/sh\nexec ${pkgs.nodejs}/bin/node ${self}/node_modules/.bin/$prg \"\$@\"" > "$out/bin/$prg"
+              chmod +x "$out/bin/$prg"
+              done
             '';
           };
         };
